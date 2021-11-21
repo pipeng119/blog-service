@@ -11,4 +11,8 @@ export class UserService {
     public async findAll(): Promise<User[]> {
         return this.userModel.find();
     }
+    
+    public async findOne({ user_name, password }: User): Promise<User> {
+        return this.userModel.findOne({ user_name, password });
+    }
 }
