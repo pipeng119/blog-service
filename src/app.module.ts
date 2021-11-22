@@ -5,6 +5,7 @@ import { AppService } from './app.service';
 import { UserModule } from './modules/user/user.module';
 import { RegisterModule } from './modules/register/register.module';
 import { LoginModule } from './modules/login/login.module';
+import { ArticleModule } from './modules/article/article.module';
 
 @Module({
   imports: [
@@ -12,7 +13,8 @@ import { LoginModule } from './modules/login/login.module';
     MongooseModule.forRoot('mongodb://localhost/blog'),
     UserModule,
     RegisterModule,
-    LoginModule
+    LoginModule,
+    ArticleModule
   ],
   controllers: [AppController],
   providers: [AppService],
