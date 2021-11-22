@@ -1,5 +1,5 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import { IRes } from 'src/mode/response.interface';
+import { Res } from 'src/mode/response';
 import { User } from 'src/mode/user.interface';
 import { UserService } from '../user/user.service';
 
@@ -9,10 +9,8 @@ export class LoginController {
     constructor(private userService: UserService) { }
 
     @Post()
-    private async login(@Body() userInfo: User): Promise<IRes<User>> {
+    private async login(@Body() userInfo: User): Promise<Res<User>> {
         let result = await this.userService.findOne(userInfo);
-        let res: IRes<User> = result ? { code: 200, data: result, message: 'success' }
-            : { code: 400, data: result, message: '账号或密码错误' }
-        return res;
+        return result ? new Res(200, result, 'success') : new Res(400, result, '账号或密码错误');
     }
 }

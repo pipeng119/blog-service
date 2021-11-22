@@ -1,23 +1,15 @@
 import { RegisterService } from './register.service';
 import { User } from './../../mode/user.interface';
 import { Body, Controller, Param, Post } from '@nestjs/common';
-import { IRes } from 'src/mode/response.interface';
+import { Res } from 'src/mode/response';
 
 @Controller('register')
 export class RegisterController {
     constructor(private registerService: RegisterService) { }
 
     @Post()
-    private async add(@Body() userInfo: User): Promise<any> {
+    private async add(@Body() userInfo: User): Promise<Res<number>> {
         let result = await this.registerService.register(userInfo);
-        let res: IRes<number> = null;
-        if (result.ok === 1) {
-            res = {
-                code: 200,
-                data: result.ok,
-                message: 'success'
-            }
-            return res
-        }
+        return result.ok === 1 ? new Res(200, result.ok, 'success') : new Res(400, result.ok, 'error')
     }
 }

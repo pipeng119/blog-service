@@ -1,4 +1,3 @@
-import { IRes } from './../../mode/response.interface';
 import { ArticleService } from './article.service';
 import { Controller, Get } from '@nestjs/common';
 import { Article } from 'src/mode/article.interface';
