@@ -1,6 +1,6 @@
-import { Res } from 'src/mode/response';
+import { CommonRes } from 'src/mode/response';
 import { ArticleService } from './article.service';
-import { Controller, Get } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { Article } from 'src/mode/article.interface';
 
 @Controller('article')
@@ -8,8 +8,15 @@ export class ArticleController {
     constructor(private articleService: ArticleService) { }
 
     @Get()
-    private async getAllArticle(): Promise<Res<Article[]>> {
+    private async getAllArticle(): Promise<CommonRes<Article[]>> {
         let result = await this.articleService.findAll();
-        return new Res(200, result, 'success')
+        return new CommonRes(200, result, 'success')
+    }
+
+    @Post()
+    private async createArticle(@Body() articleInfo: Article): Promise<CommonRes<boolean>> {
+        console.log('articleInfo: ', articleInfo);
+        let result = await this.articleService.createOne(articleInfo);
+        return result ? new CommonRes(200, true, '创建文章成功') : new CommonRes(400, false, '创建文章失败');
     }
 }

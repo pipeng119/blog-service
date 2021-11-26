@@ -1,4 +1,4 @@
-export class Res<T> {
+export class CommonRes<T> {
     code: number;
     data: T;
     message: string;

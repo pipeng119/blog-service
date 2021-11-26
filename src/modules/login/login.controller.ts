@@ -1,7 +1,8 @@
-import { Body, Controller, Post } from '@nestjs/common';
-import { Res } from 'src/mode/response';
+import { Body, Controller, Post, Req, Response, Session } from '@nestjs/common';
+import { CommonRes } from 'src/mode/response';
 import { User } from 'src/mode/user.interface';
 import { UserService } from '../user/user.service';
+import { Request } from 'express'
 
 @Controller('login')
 export class LoginController {
@@ -9,8 +10,13 @@ export class LoginController {
     constructor(private userService: UserService) { }
 
     @Post()
-    private async login(@Body() userInfo: User): Promise<Res<User>> {
+    private async login(@Body() userInfo: User, @Req() req: Request, @Response() res): Promise<void> {
         let result = await this.userService.findOne(userInfo);
-        return result ? new Res(200, result, 'success') : new Res(400, result, '账号或密码错误');
+        if (result) {
+            res.cookie('sid_guard', req.sessionID, { maxAge: 1000 * 60 * 30, httpOnly: false, signed: true });
+            res.send(new CommonRes(200, result, 'success'))
+        } else {
+            res.send(new CommonRes(400, result, '账号或密码错误'));
+        }
     }
 }
