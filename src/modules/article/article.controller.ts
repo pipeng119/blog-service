@@ -14,9 +14,15 @@ export class ArticleController {
     }
 
     @Post()
-    private async createArticle(@Body() articleInfo: Article): Promise<CommonRes<boolean>> {
+    private async createOne(@Body() articleInfo: Article): Promise<CommonRes<boolean>> {
         console.log('articleInfo: ', articleInfo);
         let result = await this.articleService.createOne(articleInfo);
         return result ? new CommonRes(200, true, '创建文章成功') : new CommonRes(400, false, '创建文章失败');
+    }
+
+    @Get('createMany')
+    private async createMany(): Promise<void> {
+        let result = await this.articleService.createMany();
+        console.log(result)
     }
 }

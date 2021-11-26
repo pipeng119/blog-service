@@ -21,7 +21,31 @@ export class ArticleService {
             create_time: Date.now(),
             ...article,
         };
-        console.log('req',req)
+        console.log('req', req)
         return this.articleModel.create(req);
     }
+
+    public async createMany(): Promise<Article[]> {
+        let articles = this.makeArticles(50);
+        return this.articleModel.create(articles);
+
+    }
+
+    private makeArticles(num: number): Article[] {
+        let arr: Article[] = [];
+        for (let i = 0; i < num; i++) {
+            arr.push({
+                id: Short.generate(),
+                title: `标题${i + 1}`,
+                summary: `概要${i + 1}`,
+                content: `内容${i + 1}`,
+                nikename: `昵称${i + 1}`,
+                create_time: Date.now(),
+                comment: 0,
+                like: 0
+            })
+        }
+        return arr;
+    }
+
 }

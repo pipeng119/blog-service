@@ -4,7 +4,7 @@ export interface Article {
     summary: string; // 概要
     content: string; // 内容
     nikename: string; // 作者
-    create_time: string; // 创建时间
+    create_time: number; // 创建时间
     comment: number; // 评论数
     like: number; // 评论数
 }
