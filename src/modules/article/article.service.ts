@@ -35,7 +35,7 @@ export class ArticleService {
         let arr: Article[] = [];
         for (let i = 0; i < num; i++) {
             arr.push({
-                id: Short.generate(),
+                article_id: Short.generate(),
                 title: `标题${i + 1}`,
                 summary: `概要${i + 1}`,
                 content: `内容${i + 1}`,
