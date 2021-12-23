@@ -13,16 +13,16 @@ export class ArticleService {
         return this.articleModel.find();
     }
 
-    public async createOne(article: Article): Promise<Article> {
-        const req = {
-            id: Short.generate(),
+    public async createOne(article: Article): Promise<any> {
+        const req: Article = {
+            article_id: Short.generate(),
             comment: 0,
             like: 0,
             create_time: Date.now(),
             ...article,
         };
         console.log('req', req)
-        return this.articleModel.create(req);
+        // return this.articleModel.create(req);
     }
 
     public async createMany(): Promise<Article[]> {

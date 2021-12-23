@@ -1,24 +1,42 @@
-import { CommonRes } from 'src/mode/response';
+import { HttpRequestBody } from 'src/mode/response';
 import { ArticleService } from './article.service';
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, UploadedFile, UploadedFiles, UseInterceptors } from '@nestjs/common';
 import { Article } from 'src/mode/article.interface';
+import { AnyFilesInterceptor, FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('article')
 export class ArticleController {
     constructor(private articleService: ArticleService) { }
 
     @Get()
-    private async getAllArticle(): Promise<CommonRes<Article[]>> {
+    private async getAllArticle(): Promise<HttpRequestBody<Article[]>> {
         let result = await this.articleService.findAll();
-        return new CommonRes(200, result, 'success')
+        return new HttpRequestBody(200, result, 'success')
     }
 
     @Post()
-    private async createOne(@Body() articleInfo: Article): Promise<CommonRes<boolean>> {
+    private async createOne(@Body() articleInfo: Article): Promise<HttpRequestBody<boolean>> {
         console.log('articleInfo: ', articleInfo);
         let result = await this.articleService.createOne(articleInfo);
-        return result ? new CommonRes(200, true, '创建文章成功') : new CommonRes(400, false, '创建文章失败');
+        return result ? new HttpRequestBody(200, true, '创建文章成功') : new HttpRequestBody(400, false, '创建文章失败');
     }
+
+    @Post('upload')
+    @UseInterceptors(FileInterceptor('avatar'))
+    uploadFile(@UploadedFile() file) {
+        console.log('file: ', file);
+    }
+    // @UseInterceptors(FileInterceptor('file'))
+    // @Post('upload')
+    // @UseInterceptors(FileInterceptor('file'))
+    // uploadFile(@Body() file) {
+    //     console.log('file: ', file);
+    // }
+    // @Post('upload')
+    // @UseInterceptors(AnyFilesInterceptor())
+    // uploadFile(@UploadedFiles() files) {
+    //     console.log(files);
+    // }
 
     @Get('createMany')
     private async createMany(): Promise<void> {

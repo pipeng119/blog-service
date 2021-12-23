@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Post, Request, Res } from '@nestjs/common';
-import { CommonRes } from 'src/mode/response';
+import { HttpRequestBody } from 'src/mode/response';
 import { User } from 'src/mode/user.interface';
 import { UserService } from './user.service';
 
@@ -15,12 +15,12 @@ export class UserController {
         console.log('req.signedCookies.sid_guard',req.signedCookies.sid_guard)
         console.log(req.sessionID === req.signedCookies.sid_guard)
         // console.log('req.signedCookies.name', req.signedCookies.sid)
-        res.send(new CommonRes(200, result, 'success'))
+        res.send(new HttpRequestBody(200, result, 'success'))
     }
 
     @Post()
-    private async createUser(@Body() userInfo: User): Promise<CommonRes<boolean>> {
+    private async createUser(@Body() userInfo: User): Promise<HttpRequestBody<boolean>> {
         let result = await this.userService.createOne(userInfo);
-        return result ? new CommonRes(200, true, '创建成功') : new CommonRes(400, false, '创建失败')
+        return result ? new HttpRequestBody(200, true, '创建成功') : new HttpRequestBody(400, false, '创建失败')
     }
 }

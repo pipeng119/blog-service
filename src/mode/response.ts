@@ -1,4 +1,4 @@
-export class CommonRes<T> {
+export class HttpRequestBody<T> {
     code: number;
     data: T;
     message: string;
