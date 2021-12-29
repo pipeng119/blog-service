@@ -1,4 +1,5 @@
-import { Body, Controller, Get, Post, Request, Res } from '@nestjs/common';
+import { Body, Controller, Get, Post, Request, Res, UseGuards } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { HttpRequestBody } from 'src/mode/response';
 import { User } from 'src/mode/user.interface';
 import { UserService } from './user.service';
@@ -9,7 +10,8 @@ export class UserController {
     constructor(private userService: UserService) { }
 
     // 获取所有的用户
-    @Get()
+    @UseGuards(AuthGuard('jwt'))
+    @Get('/list')
     private async index(@Request() req, @Res() res): Promise<void> {
         let result: User[] = await this.userService.findAll();
         res.send(new HttpRequestBody(200, result, 'success'))

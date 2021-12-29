@@ -13,10 +13,10 @@ import { AuthModule } from './modules/auth/auth.module';
     // 数据库地址
     MongooseModule.forRoot('mongodb://localhost/blog'),
     UserModule,
+    AuthModule,
     RegisterModule,
     LoginModule,
     ArticleModule,
-    AuthModule
   ],
   controllers: [AppController],
   providers: [AppService],

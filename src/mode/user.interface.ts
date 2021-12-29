@@ -3,7 +3,7 @@ import { Document, Schema } from 'mongoose';
 export interface User extends Document {
     username: string;
     password: string;
-    create_date: Date;
+    create_date?: Date;
 }
 
 export interface UserResponse<T = unknown> {
