@@ -12,9 +12,6 @@ export class UserController {
     @Get()
     private async index(@Request() req, @Res() res): Promise<void> {
         let result: User[] = await this.userService.findAll();
-        console.log('req.signedCookies.sid_guard',req.signedCookies.sid_guard)
-        console.log(req.sessionID === req.signedCookies.sid_guard)
-        // console.log('req.signedCookies.name', req.signedCookies.sid)
         res.send(new HttpRequestBody(200, result, 'success'))
     }
 

@@ -19,10 +19,10 @@ export class ArticleService {
             comment: 0,
             like: 0,
             create_time: Date.now(),
+            summary: article.content.slice(0, 16),
             ...article,
         };
-        console.log('req', req)
-        // return this.articleModel.create(req);
+        return this.articleModel.create(req);
     }
 
     public async createMany(): Promise<Article[]> {

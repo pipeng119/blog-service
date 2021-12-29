@@ -10,10 +10,9 @@ export class LoginController {
     constructor(private userService: UserService) { }
 
     @Post()
-    private async login(@Body() userInfo: User, @Req() req: Request, @Response() res): Promise<void> {
+    private async login(@Body() userInfo: User, @Req() req, @Response() res): Promise<void> {
         let result = await this.userService.findOne(userInfo);
         if (result) {
-            res.cookie('sid_guard', req.sessionID, { maxAge: 1000 * 60 * 30, httpOnly: false, signed: true });
             res.send(new HttpRequestBody(200, result, 'success'))
         } else {
             res.send(new HttpRequestBody(400, result, '账号或密码错误'));

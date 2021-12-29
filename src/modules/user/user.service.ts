@@ -12,12 +12,12 @@ export class UserService {
         return this.userModel.find();
     }
 
-    public async findOne({ user_name, password }: User): Promise<User> {
-        return this.userModel.findOne({ user_name, password });
+    public async findOne({ username, password }: User): Promise<User> {
+        return this.userModel.findOne({ username, password });
     }
 
     public async createOne(userInfo: User): Promise<any> {
-        const isExist = await this.userModel.exists({ user_name: userInfo.user_name });
+        const isExist = await this.userModel.exists({ username: userInfo.username });
         if (isExist) {
             return Promise.resolve(null);
         } else {

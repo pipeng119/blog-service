@@ -1,6 +1,6 @@
 import { HttpRequestBody } from 'src/mode/response';
 import { ArticleService } from './article.service';
-import { Body, Controller, Get, Post, UploadedFile, UploadedFiles, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, Post, UploadedFile, UploadedFiles, UseInterceptors, Request, Response, Session } from '@nestjs/common';
 import { Article } from 'src/mode/article.interface';
 import { AnyFilesInterceptor, FileInterceptor } from '@nestjs/platform-express';
 
@@ -15,10 +15,11 @@ export class ArticleController {
     }
 
     @Post()
-    private async createOne(@Body() articleInfo: Article): Promise<HttpRequestBody<boolean>> {
-        console.log('articleInfo: ', articleInfo);
+    // private async createOne(@Body() articleInfo: Article, @Request() req): Promise<HttpRequestBody<boolean>> {
+    private async createOne(@Body() articleInfo: Article, @Request() req, @Response() res): Promise<any> {
+        // articleInfo = { ...articleInfo, nikename: req.signedCookies.username };
         let result = await this.articleService.createOne(articleInfo);
-        return result ? new HttpRequestBody(200, true, '创建文章成功') : new HttpRequestBody(400, false, '创建文章失败');
+        res.send(result ? new HttpRequestBody(200, true, '创建文章成功') : new HttpRequestBody(400, false, '创建文章失败'));
     }
 
     @Post('upload')
