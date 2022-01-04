@@ -10,12 +10,11 @@ export class AuthService {
 
     async validate(username: string, password: string): Promise<User> {
         const user = this.userService.findOne({ username, password });
-        console.log('user: ', user);
         return user ? user : null;
 
     }
 
-    async login(user: User): Promise<any> {
+    async login(user: User): Promise<{ username: string, token: string }> {
         const { id, username } = user;
         return {
             username,

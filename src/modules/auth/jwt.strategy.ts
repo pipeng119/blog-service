@@ -14,7 +14,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: any): Promise<any> {
-      console.log('payload: ', payload);
     //payload：jwt-passport认证jwt通过后解码的结果
     return { username: payload.username, id: payload.sub };
   }
