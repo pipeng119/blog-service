@@ -1,6 +1,6 @@
 import { HttpRequestBody } from 'src/mode/response';
 import { ArticleService } from './article.service';
-import { Body, Controller, Get, Post, UploadedFile, UploadedFiles, UseInterceptors, Request, Response, Session, UseGuards, Param } from '@nestjs/common';
+import { Body, Controller, Get, Post, UploadedFile, UploadedFiles, UseInterceptors, Request, Response, Session, UseGuards, Param, Query } from '@nestjs/common';
 import { Article } from 'src/mode/article.interface';
 import { AnyFilesInterceptor, FileInterceptor } from '@nestjs/platform-express';
 import { AuthGuard } from '@nestjs/passport';
@@ -10,9 +10,9 @@ export class ArticleController {
     constructor(private articleService: ArticleService) { }
 
     @UseGuards(AuthGuard('jwt'))
-    @Get()
-    private async getAllArticle(): Promise<HttpRequestBody<Article[]>> {
-        let result = await this.articleService.findAll();
+    @Get('/all')
+    private async getAllArticle(@Query('key') key, @Request() req): Promise<HttpRequestBody<Article[]>> {
+        let result = await this.articleService.findAll(key + '', req.user.username);
         return new HttpRequestBody(200, result, 'success')
     }
 

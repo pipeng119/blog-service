@@ -10,9 +10,11 @@ export class ArticleService {
         @InjectModel('Articles') private readonly articleModel: Model<Article>,
     ) { }
 
-    public async findAll(): Promise<Article[]> {
-        return this.articleModel.find();
+    public async findAll(key: string, nikename: string): Promise<Article[]> {
+        let condition = key === 'admin' ? { nikename: { $eq: nikename } } : {};
+        return this.articleModel.find(condition);
     }
+    
     public async findOne(article_id): Promise<Article> {
         return this.articleModel.findOne({ article_id });
     }
