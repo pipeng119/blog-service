@@ -12,6 +12,9 @@ export class ArticleService {
     public async findAll(): Promise<Article[]> {
         return this.articleModel.find();
     }
+    public async findOne(article_id): Promise<Article> {
+        return this.articleModel.findOne({ article_id });
+    }
 
     public async createOne(article: Article): Promise<any> {
         const req: Article = {
