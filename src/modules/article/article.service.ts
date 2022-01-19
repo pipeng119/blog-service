@@ -24,7 +24,7 @@ export class ArticleService {
                 ? article.content.slice(0, sliceNum) + '...'
                 : article.content.slice(0, sliceNum);
         const req: Article = {
-            article_id: (await this.articleModel.find()).length + 1,
+            article_id: Short.generate(),
             comment: 0,
             like: 0,
             create_time: Date.now(),
