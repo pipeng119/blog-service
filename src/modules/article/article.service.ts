@@ -2,12 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Article } from 'src/mode/article.interface';
-import * as Short from 'short-uuid'
+import * as Short from 'short-uuid';
 
 @Injectable()
 export class ArticleService {
-
-    constructor(@InjectModel('Articles') private readonly articleModel: Model<Article>) { }
+    constructor(
+        @InjectModel('Articles') private readonly articleModel: Model<Article>,
+    ) { }
 
     public async findAll(): Promise<Article[]> {
         return this.articleModel.find();
@@ -17,12 +18,17 @@ export class ArticleService {
     }
 
     public async createOne(article: Article): Promise<any> {
+        const sliceNum = 16;
+        const summary =
+            article.content.length > sliceNum
+                ? article.content.slice(0, sliceNum) + '...'
+                : article.content.slice(0, sliceNum);
         const req: Article = {
-            article_id: Short.generate(),
+            article_id: (await this.articleModel.find()).length + 1,
             comment: 0,
             like: 0,
             create_time: Date.now(),
-            summary: article.content.slice(0, 16),
+            summary,
             ...article,
         };
         return this.articleModel.create(req);
@@ -31,7 +37,6 @@ export class ArticleService {
     public async createMany(): Promise<Article[]> {
         let articles = this.makeArticles(50);
         return this.articleModel.create(articles);
-
     }
 
     private makeArticles(num: number): Article[] {
@@ -45,10 +50,9 @@ export class ArticleService {
                 nikename: `昵称${i + 1}`,
                 create_time: Date.now(),
                 comment: 0,
-                like: 0
-            })
+                like: 0,
+            });
         }
         return arr;
     }
-
 }
