@@ -7,4 +7,5 @@ export interface Article {
     create_time: number; // 创建时间
     comment: number; // 评论数
     like: number; // 评论数
+    isDeleted?: boolean; // 软删除
 }

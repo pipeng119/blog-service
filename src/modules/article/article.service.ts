@@ -12,11 +12,11 @@ export class ArticleService {
 
     public async findAll(key: string, nikename: string): Promise<Article[]> {
         let condition = key === 'admin' ? { nikename: { $eq: nikename } } : {};
-        return this.articleModel.find(condition);
+        return this.articleModel.find({ ...condition, ...{ isDeleted: { $ne: true } } });
     }
-    
+
     public async findOne(article_id): Promise<Article> {
-        return this.articleModel.findOne({ article_id });
+        return this.articleModel.findOne({ article_id, ...{ isDeleted: { $ne: true } } });
     }
 
     public async createOne(article: Article): Promise<any> {
@@ -34,6 +34,10 @@ export class ArticleService {
             ...article,
         };
         return this.articleModel.create(req);
+    }
+
+    public async removeOne(article_id: string): Promise<any> {
+        return this.articleModel.updateOne({ article_id }, { $set: { isDeleted: true } });
     }
 
     public async createMany(): Promise<Article[]> {

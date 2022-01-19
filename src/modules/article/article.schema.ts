@@ -9,4 +9,5 @@ export const articleSchema = new Schema({
     create_time: { type: String, required: true },
     comment: { type: Number, required: true },
     like: { type: Number, required: true },
+    isDeleted: { type: Boolean, required: false }
 }, { versionKey: false })
