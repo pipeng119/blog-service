@@ -12,7 +12,7 @@ export class ArticleService {
 
     public async findAll(key: string, nikename: string): Promise<Article[]> {
         let condition = key === 'admin' ? { nikename: { $eq: nikename } } : {};
-        return this.articleModel.find({ ...condition, ...{ isDeleted: { $ne: true } } });
+        return this.articleModel.find({ ...condition, ...{ isDeleted: { $ne: true } } }).sort({ create_time: -1 }).limit(20);
     }
 
     public async findOne(article_id): Promise<Article> {
