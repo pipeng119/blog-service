@@ -1,6 +1,6 @@
 import { HttpRequestBody } from 'src/mode/response';
 import { ArticleService } from './article.service';
-import { Body, Controller, Get, Post, UploadedFile, UploadedFiles, UseInterceptors, Request, Response, Session, UseGuards, Param, Query, Delete } from '@nestjs/common';
+import { Body, Controller, Get, Post, UploadedFile, UploadedFiles, UseInterceptors, Request, Response, Session, UseGuards, Param, Query, Delete, Put } from '@nestjs/common';
 import { Article } from 'src/mode/article.interface';
 import { AnyFilesInterceptor, FileInterceptor } from '@nestjs/platform-express';
 import { AuthGuard } from '@nestjs/passport';
@@ -37,6 +37,13 @@ export class ArticleController {
     private async removeOne(@Param('id') id: string) {
         let result = await this.articleService.removeOne(id);
         return result.matchedCount ? new HttpRequestBody(200, true, '删除文章成功') : new HttpRequestBody(400, false, '删除文章失败');
+    }
+
+    @UseGuards(AuthGuard('jwt'))
+    @Put()
+    private async updateOne(@Body() articleInfo: Article, @Request() req) {
+        let result = await this.articleService.updateOne(articleInfo);
+        return result.matchedCount ? new HttpRequestBody(200, true, '更新文章成功') : new HttpRequestBody(400, false, '更新文章失败');
     }
 
     @Post('upload')

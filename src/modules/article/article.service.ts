@@ -39,6 +39,21 @@ export class ArticleService {
     public async removeOne(article_id: string): Promise<any> {
         return this.articleModel.updateOne({ article_id }, { $set: { isDeleted: true } });
     }
+    
+    public async updateOne(article: Article): Promise<any> {
+        const sliceNum = 16;
+        const summary =
+            article.content.length > sliceNum
+                ? article.content.slice(0, sliceNum) + '...'
+                : article.content.slice(0, sliceNum);
+        const req: Article = {
+            ...article,
+            create_time: Date.now(),
+            summary,
+        };
+        const { article_id } = req;
+        return this.articleModel.updateOne({ article_id }, { $set: req });
+    }
 
     public async createMany(): Promise<Article[]> {
         let articles = this.makeArticles(50);
